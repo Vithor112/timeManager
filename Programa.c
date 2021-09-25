@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #define SEGUNDOS_TRABALHO 6*3600
+#define MUSICA_ARQUIVO "a.mp3"
 
 /*Problema: É que o site de bate o ponto não registra o horário que eu já trabalhei. Então eu quero um programa que cuide do horário que eu já trabalhei e receba meus pontos de entrada e saída.
 Continue rodando até fechar 6 horas trabalhadas.
@@ -119,7 +120,7 @@ int main(void){
         // Encerra se cumprir todas as horas diárias e toca uma música
         if((segundosTrabalhados+Backup_seg) >= SEGUNDOS_TRABALHO){
             endwin();
-            system("play a.mp3");
+            system("play "MUSICA_ARQUIVO);
             exit(0);
         }
         // Imprime a quantidade de tempo trabalhado
