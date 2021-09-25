@@ -7,35 +7,15 @@
 
 #define SEGUNDOS_TRABALHO 6*3600
 #define MUSICA_ARQUIVO "a.mp3"
-
-/*Problema: É que o site de bate o ponto não registra o horário que eu já trabalhei. Então eu quero um programa que cuide do horário que eu já trabalhei e receba meus pontos de entrada e saída.
-Continue rodando até fechar 6 horas trabalhadas.
-
-- Contar o Tempo:
-    - Marca um tempo inicial ( TI );
-    - Tempo atual ( Olhando pro relógio ) -  TI = Tempo que já passou;
-Entradas e saídas: 
-    - Começar a contar o tempo quando tem entrada e parar quando tem saída;
-    - Armazenar total de horas trabalhadas;
-Encerrar o Programa: 
-    - Somente quando ultrapassar 6 horas diárias
-    - Dar Aviso sonoro
-Previsão de Saída; * Tirar horas já trabalhadas da previsão de saída
-
-*/
+#define TELA row,col
 
 
-/* 
-    localtime() struct time
-    time() Retorna o tempo em segundos desde 1970 ( retorna um time_t) 
-    struct tm Campo pra seg, min, hora, dia, mes ,ano
-    time_t segundos desde 1970 tipo inteiro
-*/
-
+void inicializandoNcurses();
+void print_menu(int row, int col);
 struct tm *get_time();
-
 enum turn {ON, OFF};
 enum Select {ENTR,SAID};
+void Control_menu(int row, int col, int caracter_inp, enum Select *flag);
 
 int main(void){
     // Flag pra Gerenciar o Rastreio do tempo 
@@ -46,49 +26,19 @@ int main(void){
     int horasTrabalhadas = 0, minutosTrabalhadas = 0, segundosTrabalhados = 0, segundosTrabalhadosTotais =0,  Backup_seg = 0;
     struct tm *tempo;
     time_t tempoInicial, tempoFinal;
-    int row,col row_entr = 0;
+    int row,col, row_entr = 0;
     
     // Inicializando Ncurses e imprimindo o menu
-    initscr();
-    raw();		
-    noecho();		
-	keypad(stdscr, TRUE);	
-    // Determina tempo de resposta para 1 seg, importante para sincronia do tempo!
-    halfdelay(10);
-    start_color();
-    init_pair(1, COLOR_BLUE, COLOR_BLACK);
-    init_pair(2, COLOR_RED, COLOR_BLACK);
-    init_pair(3, COLOR_RED, COLOR_WHITE);
+
+    inicializandoNcurses();
     getmaxyx(stdscr,row,col);
-    attron(A_BOLD | COLOR_PAIR(1));
-    mvprintw(row/2-6,(col-strlen("Menu"))/2,"Menu");
-    attroff(A_BOLD);
-    attrset(COLOR_PAIR(3));
-    mvprintw(row/2-4,(col-strlen("Entrada"))/2,"Entrada");
-    attrset(COLOR_PAIR(2));
-    mvprintw(row/2-2,(col-strlen("Saída"))/2,"Saída");
+    print_menu(TELA);
 
     int caracter_inp;
-    while(true){         
-        switch(caracter_inp){
-            // Move o Menu
-            case KEY_DOWN:
-                            attrset(COLOR_PAIR(3));
-                            mvprintw(row/2-2,(col-strlen("Saída"))/2,"%s","Saída");
-                            attrset(COLOR_PAIR(2));
-                            mvprintw(row/2-4,(col-strlen("Entrada"))/2,"%s","Entrada");
-                            flag = SAID;
-                            break;
-            case KEY_UP: 
-                            attrset(COLOR_PAIR(3));
-                            mvprintw(row/2-4,(col-strlen("Entrada"))/2,"%s","Entrada");
-                            attrset(COLOR_PAIR(2));
-                            mvprintw(row/2-2,(col-strlen("Saída"))/2,"%s","Saída");
-                            flag = ENTR;
-                            break;
-            default:
-                            break;
-        }
+    while(true){    
+             
+        Control_menu(TELA, caracter_inp, &flag);
+
         // Atualiza o Relógio no canto direito inferior
         mvprintw(row-1,0,"%s",asctime(get_time()));
 
@@ -131,6 +81,28 @@ int main(void){
     return 0;
 }
 
+// Move o Menu
+void Control_menu(int row, int col, int caracter_inp, enum Select *flag){
+    switch(caracter_inp){
+
+        case KEY_DOWN:
+                attrset(COLOR_PAIR(3));
+                mvprintw(row/2-2,(col-strlen("Saída"))/2,"%s","Saída");
+                attrset(COLOR_PAIR(2));
+                mvprintw(row/2-4,(col-strlen("Entrada"))/2,"%s","Entrada");
+                *flag = SAID;
+                break;
+        case KEY_UP: 
+                attrset(COLOR_PAIR(3));
+                mvprintw(row/2-4,(col-strlen("Entrada"))/2,"%s","Entrada");
+                attrset(COLOR_PAIR(2));
+                mvprintw(row/2-2,(col-strlen("Saída"))/2,"%s","Saída");
+                *flag = ENTR;
+                break;
+            default:
+                break;
+        }
+}
 
 // Retorna o tempo atual 
 struct tm *get_time(){
@@ -139,4 +111,27 @@ struct tm *get_time(){
     time(&raw_time);
     actual_time = localtime(&raw_time);
     return actual_time;
+}
+
+void inicializandoNcurses(){
+    initscr();
+    raw();		
+    noecho();		
+	keypad(stdscr, TRUE);	
+    // Determina tempo de resposta para 1 seg, importante para sincronia do tempo!
+    halfdelay(10);
+    start_color();
+}
+
+void print_menu(int row, int col){
+    init_pair(1, COLOR_BLUE, COLOR_BLACK);
+    init_pair(2, COLOR_RED, COLOR_BLACK);
+    init_pair(3, COLOR_RED, COLOR_WHITE);
+    attron(A_BOLD | COLOR_PAIR(1));
+    mvprintw(row/2-6,(col-strlen("Menu"))/2,"Menu");
+    attroff(A_BOLD);
+    attrset(COLOR_PAIR(3));
+    mvprintw(row/2-4,(col-strlen("Entrada"))/2,"Entrada");
+    attrset(COLOR_PAIR(2));
+    mvprintw(row/2-2,(col-strlen("Saída"))/2,"Saída");
 }
