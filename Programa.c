@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#define SEGUNDOS_TRABALHO 6*3600
+#define SEGUNDOS_TRABALHO 100
 #define MUSICA_ARQUIVO "a.mp3"
 #define TELA row,col
 
@@ -68,7 +68,7 @@ int main(void){
             segundosTrabalhados = (Backup_seg + segundosTrabalhadosTotais)%60;
         }
         // Encerra se cumprir todas as horas diárias e toca uma música
-        if((segundosTrabalhados+Backup_seg) >= SEGUNDOS_TRABALHO){
+        if((segundosTrabalhadosTotais+Backup_seg) >= SEGUNDOS_TRABALHO){
             endwin();
             system("play "MUSICA_ARQUIVO);
             exit(0);
@@ -124,11 +124,11 @@ void inicializandoNcurses(){
 }
 
 void print_menu(int row, int col){
-    init_pair(1, COLOR_BLUE, COLOR_BLACK);
-    init_pair(2, COLOR_RED, COLOR_BLACK);
-    init_pair(3, COLOR_RED, COLOR_WHITE);
+    init_pair(1, COLOR_WHITE, COLOR_BLACK);
+    init_pair(2, COLOR_BLUE, COLOR_BLACK);
+    init_pair(3, COLOR_BLUE, COLOR_WHITE);
     attron(A_BOLD | COLOR_PAIR(1));
-    mvprintw(row/2-6,(col-strlen("Menu"))/2,"Menu");
+    mvprintw(row/2-6,(col-strlen("-Menu"))/2,"-Menu");
     attroff(A_BOLD);
     attrset(COLOR_PAIR(3));
     mvprintw(row/2-4,(col-strlen("Entrada"))/2,"Entrada");
