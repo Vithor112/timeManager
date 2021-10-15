@@ -5,17 +5,29 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#define SEGUNDOS_TRABALHO 100
+#define SEGUNDOS_TRABALHO 6*3600
 #define MUSICA_ARQUIVO "a.mp3"
 #define TELA row,col
 
+#define TIMETOTALPRINT(x) x.hours,x.minutes,x.seconds
 
+// Flags 
+enum turn {ON, OFF};
+enum Select {ENTR,SAID};
+
+// Structs 
+typedef struct timeTotal {
+    int hours;
+    int minutes;
+    int seconds;
+}timeTotal;
+
+// Protótipo funções
 void inicializandoNcurses();
 void print_menu(int row, int col);
 struct tm *get_time();
-enum turn {ON, OFF};
-enum Select {ENTR,SAID};
 void Control_menu(int row, int col, int caracter_inp, enum Select *flag);
+void initializeTimeTotal(timeTotal *tt);
 
 int main(void){
     // Flag pra Gerenciar o Rastreio do tempo 
@@ -23,13 +35,14 @@ int main(void){
     // Flag pra Gerenciar o Menu
     enum Select flag = ENTR;
 
-    int horasTrabalhadas = 0, minutosTrabalhadas = 0, segundosTrabalhados = 0, segundosTrabalhadosTotais =0,  Backup_seg = 0;
+    timeTotal totalWorked; 
+    int segundosTrabalhadosTotais =0,  Backup_seg = 0;
     struct tm *tempo;
     time_t tempoInicial, tempoFinal;
     int row,col, row_entr = 0;
     
     // Inicializando Ncurses e imprimindo o menu
-
+    initializeTimeTotal(&totalWorked);
     inicializandoNcurses();
     getmaxyx(stdscr,row,col);
     print_menu(TELA);
@@ -57,15 +70,16 @@ int main(void){
             row_entr++;
             is_on = OFF;
             Backup_seg += segundosTrabalhadosTotais;
+            segundosTrabalhadosTotais = 0;
         }
 
         // Conta o tempo
         if (is_on == ON){
             time(&tempoFinal);
             segundosTrabalhadosTotais =  tempoFinal - tempoInicial;
-            horasTrabalhadas = (Backup_seg + segundosTrabalhadosTotais)/3600;
-            minutosTrabalhadas = ((Backup_seg + segundosTrabalhadosTotais)%3600)/60;
-            segundosTrabalhados = (Backup_seg + segundosTrabalhadosTotais)%60;
+            totalWorked.hours = (Backup_seg + segundosTrabalhadosTotais)/3600;
+            totalWorked.minutes = ((Backup_seg + segundosTrabalhadosTotais)%3600)/60;
+            totalWorked.seconds = (Backup_seg + segundosTrabalhadosTotais)%60;
         }
         // Encerra se cumprir todas as horas diárias e toca uma música
         if((segundosTrabalhadosTotais+Backup_seg) >= SEGUNDOS_TRABALHO){
@@ -74,11 +88,19 @@ int main(void){
             exit(0);
         }
         // Imprime a quantidade de tempo trabalhado
-        mvprintw(0,col-28,"Tempo trabalhado: %2d :%2d :%2d", horasTrabalhadas,minutosTrabalhadas,segundosTrabalhados);
+        mvprintw(0,col-28,"Tempo trabalhado: %2d :%2d :%2d", TIMETOTALPRINT(totalWorked));
         caracter_inp = getch();
     }
     endwin();
     return 0;
+}
+
+
+
+void initializeTimeTotal(timeTotal *tt){
+    tt->hours = 0;
+    tt->minutes = 0;
+    tt->seconds = 0;
 }
 
 // Move o Menu
