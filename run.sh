@@ -1,0 +1,8 @@
+#!/usr/bin/bash 
+mkdir -p build
+cd build
+cmake ..
+cmake --build . 
+mv teste ..
+cd ..
+./teste
