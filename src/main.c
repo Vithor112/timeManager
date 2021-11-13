@@ -1,4 +1,4 @@
-#include "param.h"
+#include "libs/param.h"
 
 int main(void){
     // Flag pra Gerenciar o Rastreio do tempo ( indica se já está contando o tempo )
@@ -57,6 +57,7 @@ int main(void){
         // Imprime a quantidade de tempo trabalhado
         mvprintw(0,col-28,"Tempo trabalhado: %2d :%2d :%2d", TIMETOTALPRINT(totalWorked));
         caracter_inp = getch();
+        refresh();
     }
     endwin();
     return 0;
