@@ -18,19 +18,30 @@
 enum turn {ON, OFF};
 enum Select {ENTR,SAID};
 
+
 // Structs 
+
+// Tamanho tela
+typedef struct {
+    int col;
+    int row; 
+}screen; 
+
+// Tempo (hrs, min, secs)
 typedef struct timeTotal {
     int hours;
     int minutes;
     int seconds;
-}timeTotal;
+}timeTotal; 
 
 // Protótipo funções
+
 void initializeNCurses();
-void interfacePrintMenu(int row, int col);
+void interfacePrintMenu(screen scr);
 struct tm *timeGetTime();
-void controlMenu(int row, int col, int caracter_inp, enum Select *flag);
+void controlMenu(screen scr, int caracter_inp, enum Select *flag);
 void initializeTimeTotal(timeTotal *tt);
 void interfacePrintEntry(int *row_entr, struct tm *time, enum turn *is_on);
+void initializeScreen(screen *s);
 
 #endif

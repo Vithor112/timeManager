@@ -6,56 +6,59 @@ int main(void){
     // Flag pra Gerenciar o Menu ( indica a opção selecionada )
     enum Select flag = ENTR;
 
-    timeTotal totalWorked; 
-    int segundosTrabalhadosTotais =0,  Backup_seg = 0;
-    struct tm *timeNow;
-    time_t tempoInicial, tempoFinal;
-    int row,col, row_entr = 0; // row_entr = Variável que cuida da posição y para printar o histórico;
+    timeTotal totalWorked;          // Armazena tempo trabalhado ( display relógio )
+    int totalSecsWorked =0;         // Armazena o tempo trabalhado no período atual
+    int Backup_seg = 0;             // Armazena o tempo trabalhado em toda execução do programa
+    struct tm *timeNow;             // Armazena o tempo atual ( display relógio )     
+    time_t initialTime, finalTime;  // Armazena o tempo de entrada e o tempo de saída
+    screen scr;                     // Armazena tamanho da tela
+    int row_entr = 0;               // Cuida da posição y para printar o histórico;
     
     // Inicializando Ncurses e imprimindo o menu
+    initializeScreen(&scr);
     initializeTimeTotal(&totalWorked);
     initializeNCurses();
-    getmaxyx(stdscr,row,col);
-    interfacePrintMenu(SCREEN);
+    getmaxyx(stdscr,scr.row,scr.col);
+    interfacePrintMenu(scr);
 
     int caracter_inp;
     while(true){    
              
-        controlMenu(SCREEN, caracter_inp, &flag);
+        controlMenu(scr, caracter_inp, &flag);
 
         // Atualiza o Relógio no canto direito inferior
-        mvprintw(row-1,0,"%s",asctime(timeGetTime()));
+        mvprintw(scr.row-1,0,"%s",asctime(timeGetTime()));
 
         // Adiciona uma Entrada e começa a contar o tempo  
         if (caracter_inp == 10 && flag == ENTR && is_on == OFF){
             timeNow = timeGetTime();
             interfacePrintEntry(&row_entr, timeNow, &is_on);
-            time(&tempoInicial);
+            time(&initialTime);
         }
-        // Adiciona uma Saida e para de contar o tempo, salvando-o na var Bakcup_seg
+        // Adiciona uma Saida e para de contar o tempo, salvando-o na var Backup_seg
         if (caracter_inp == 10 && flag == SAID && row_entr && is_on == ON){
             timeNow = timeGetTime();
-            interfacePrintEntry(&row_entr, timeNow, &is_on);
-            Backup_seg += segundosTrabalhadosTotais; // Coloca o tempo já contado em uma variável  
-            segundosTrabalhadosTotais = 0;           // E zera esse tempo  
+            interfacePrintEntry(&row_entr, timeNow, &is_on); 
+            Backup_seg += totalSecsWorked; 
+            totalSecsWorked = 0;           
         }
 
-        // Conta o tempo
+        // Conta o tempo e atualiza o total contado
         if (is_on == ON){
-            time(&tempoFinal);
-            segundosTrabalhadosTotais =  tempoFinal - tempoInicial;                 // Atualiza o tempo já trabalhado
-            totalWorked.hours = (Backup_seg + segundosTrabalhadosTotais)/3600;      // Somando o tempo j́a contado previamente com o tempo contado agora obtém o total
-            totalWorked.minutes = ((Backup_seg + segundosTrabalhadosTotais)%3600)/60;
-            totalWorked.seconds = (Backup_seg + segundosTrabalhadosTotais)%60;
+            time(&finalTime);
+            totalSecsWorked =  finalTime - initialTime;                
+            totalWorked.hours = (Backup_seg + totalSecsWorked)/3600;     
+            totalWorked.minutes = ((Backup_seg + totalSecsWorked)%3600)/60;
+            totalWorked.seconds = (Backup_seg + totalSecsWorked)%60;
         }
         // Encerra se cumprir todas as horas diárias e toca uma música
-        if((segundosTrabalhadosTotais+Backup_seg) >= SEGUNDOS_TRABALHO){
+        if((totalSecsWorked+Backup_seg) >= SEGUNDOS_TRABALHO){
             endwin();
             system("play "MUSICA_ARQUIVO);
             exit(0);
         }
         // Imprime a quantidade de tempo trabalhado
-        mvprintw(0,col-28,"Tempo trabalhado: %2d :%2d :%2d", TIMETOTALPRINT(totalWorked));
+        mvprintw(0,scr.col-28,"Tempo trabalhado: %2d :%2d :%2d", TIMETOTALPRINT(totalWorked));
         caracter_inp = getch();
         refresh();
     }
