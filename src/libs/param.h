@@ -41,7 +41,7 @@ void interfacePrintMenu(screen scr);
 struct tm *timeGetTime();
 void controlMenu(screen scr, int caracter_inp, enum Select *flag);
 void initializeTimeTotal(timeTotal *tt);
-void interfacePrintEntry(int *row_entr, struct tm *time, enum turn *is_on);
+void interfacePrintEntry(int *row_entr,FILE *log, enum turn *is_on);
 void initializeScreen(screen *s);
 
 #endif
