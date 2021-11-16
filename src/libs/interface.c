@@ -1,4 +1,5 @@
 #include "param.h"
+#include "structures.h"
 // Printa Registro  e atualiza variáveis 
 void interfacePrintEntry(int *row_entr, FILE *log, enum turn *is_on){
     struct tm *time = timeGetTime();
@@ -31,4 +32,5 @@ void interfacePrintMenu(screen scr){
     mvprintw(scr.row/2-4,(scr.col-strlen("Entrada"))/2,"Entrada");
     attrset(COLOR_PAIR(2));
     mvprintw(scr.row/2-2,(scr.col-strlen("Saída"))/2,"Saída");
+    mvprintw(scr.row/2,(scr.col-strlen("Sair e Salvar"))/2,"Sair e Salvar");
 }

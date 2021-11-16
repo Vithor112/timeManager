@@ -1,4 +1,6 @@
 #include "param.h"
+#include "structures.h"
+
 void initializeNCurses(){
     initscr();
     raw();		
@@ -15,7 +17,8 @@ void initializeTimeTotal(timeTotal *tt){
     tt->seconds = 0;
 }
 
-void initializeScreen(screen *s){
-    s->row = 0;
-    s->col = 0;
+void screenInitialize(screen *scr){
+    scr->row = 0;
+    scr->col = 0;
 }
+

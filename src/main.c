@@ -1,4 +1,5 @@
 #include "libs/param.h"
+#include "libs/structures.h"
 
 FILE *openLog();
 int main(void){
@@ -17,7 +18,7 @@ int main(void){
     FILE *log = openLog();
     fprintf(log, "Type,Hours,Minutes,Seconds\n");
     // Inicializando Ncurses e imprimindo o menu
-    initializeScreen(&scr);
+    screenInitialize(&scr);
     initializeTimeTotal(&totalWorked);
     initializeNCurses();
     getmaxyx(stdscr,scr.row,scr.col);
