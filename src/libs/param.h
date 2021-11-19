@@ -11,7 +11,6 @@
 
 #define SEGUNDOS_TRABALHO 120
 #define MUSICA_ARQUIVO "a.mp3"
-#define SCREEN row,col
 
 #define TIMETOTALPRINT(x) x.hours,x.minutes,x.seconds
 

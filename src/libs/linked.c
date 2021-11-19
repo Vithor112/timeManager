@@ -1,24 +1,33 @@
 #include "structures.h"
 #include "param.h"
 
+// Cria lista encadeada
 linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr){
-    if (lin == NULL){
-        lin = (linkedStr *) mallloc(sizeof(linkedStr));
-        strncpy(lin->str, string, 100);
+    if (lin == NULL){                                       // Criando Lista
+        lin = (linkedStr *) malloc(sizeof(linkedStr));
+        lin->str = (char *) malloc(strlen(string));
+        strcpy(lin->str, string);
         lin->scr = scr;
         lin->ptr = NULL;
     }
-    else {
-        linkedStr *path = lin; 
-        for (;path->ptr; path = path->ptr);
-        linkedStr *new = (linkedStr *) mallloc(sizeof(linkedStr));
-        strncpy(new->str, string, 100);
+
+    else {                                              // Adicionando na Lista
+        linkedStr *path = lin;  
+        for (;path->ptr; path = path->ptr);             // Andando pela lista até o fim
+
+        linkedStr *new = (linkedStr *) malloc(sizeof(linkedStr)); // Alocando memória para novo nodo
+        new->str = (char *) malloc(strlen(string));
+        strcpy(new->str, string);
         new->scr = scr;
         new->ptr = NULL;
+
+        path->ptr = new;                            // linkando
     }
+
     return lin;
 }
 
+// Desaloca memória
 linkedStr *linkedDestruct(linkedStr *lin){
     if (lin == NULL);
         return NULL;

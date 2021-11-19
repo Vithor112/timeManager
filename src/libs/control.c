@@ -3,7 +3,7 @@
 #define MAX_MENU 1
 #define MIN_MENU 0
 
-void printMenu(screen scr, enum Select flag);
+void printMenu(screen scr);
 void rotate_flag(enum Select *flag, int rot);
 
 // Move o Menu
@@ -26,6 +26,8 @@ void controlMenu(screen scr, int caracter_inp, enum Select *flag){
         }
     attrset(COLOR_PAIR(2));
 }
+
+
 void rotate_flag(enum Select *flag, int rot){
         (*flag) += rot;
         if (*flag < 0)
@@ -34,7 +36,7 @@ void rotate_flag(enum Select *flag, int rot){
                 *flag = MIN_MENU;
 }
 
-void printMenu(screen scr, enum Select flag){
+void printMenu(screen scr){
     attroff(A_BOLD);
     attrset(COLOR_PAIR(2));
     mvprintw(scr.row/2-4,(scr.col-strlen("Entrada"))/2,"Entrada");
