@@ -23,5 +23,5 @@ linkedStr *menuCreateList(){
         count += 2;         // tela 
     }
     fclose(arq);
-    return NULL;
+    return link;
 }

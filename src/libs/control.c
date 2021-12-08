@@ -14,8 +14,10 @@ void controlMenu(screen scr, int caracter_inp, enum Select *flag){
     switch(caracter_inp){
         case KEY_DOWN:
                 printMenu(scr);
+                mvprintw(menu->scr.row,menu->scr.col,"%s",menu->str);
+                menu = menu->bef;
                 attrset(COLOR_PAIR(SELECTED));
-                //mvprintw(menu->scr.row/2-2,(menu->scr.col-strlen("ola"))/2,"%s","ola");
+                mvprintw(menu->scr.row,menu->scr.col,"%s",menu->str);
                 rotate_flag(flag, -1);
                 break;
         case KEY_UP: 

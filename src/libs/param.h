@@ -25,5 +25,7 @@ void initializeTimeTotal(timeTotal *tt);
 void interfacePrintEntry(int *row_entr,FILE *log, enum turn *is_on);
 void initializeScreen(screen *s);
 linkedStr *menuCreateList();
+linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr);
+void screenInitialize(screen *scr);
 
 #endif
