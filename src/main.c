@@ -5,8 +5,6 @@ FILE *openLog();
 int main(void){
     // Flag pra Gerenciar o Rastreio do tempo ( indica se já está contando o tempo )
     enum turn is_on = OFF;
-    // Flag pra Gerenciar o Menu ( indica a opção selecionada )
-    enum Select flag = ENTR;
 
     timeTotal totalWorked;          // Armazena tempo trabalhado ( display relógio )
     int totalSecsWorked =0;         // Armazena o tempo trabalhado no período atual
@@ -25,20 +23,21 @@ int main(void){
     interfacePrintMenu(scr);
 
     int caracter_inp;
+    linkedStr *menu = menuCreateList();
     while(true){    
-             
-        controlMenu(scr, caracter_inp, &flag);
+        
+        menu = controlMenu(scr, caracter_inp, menu);
 
         // Atualiza o Relógio no canto direito inferior
         mvprintw(scr.row-1,0,"%s",asctime(timeGetTime()));
 
         // Adiciona uma Entrada e começa a contar o tempo  
-        if (caracter_inp == 10 && flag == ENTR && is_on == OFF){
+        if (caracter_inp == 10 && menu->flag == ENTRY && is_on == OFF){
             interfacePrintEntry(&row_entr,log, &is_on);
             time(&initialTime);
         }
         // Adiciona uma Saida e para de contar o tempo, salvando-o na var Backup_seg
-        if (caracter_inp == 10 && flag == SAID && row_entr && is_on == ON){
+        if (caracter_inp == 10 && menu->flag == FINISH && row_entr && is_on == ON){
             interfacePrintEntry(&row_entr,log, &is_on); 
             Backup_seg += totalSecsWorked; 
             totalSecsWorked = 0;           

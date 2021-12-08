@@ -10,23 +10,22 @@ linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr){
         lin->scr = scr;
         lin->next = lin;
         lin->bef = lin; 
+        lin->flag = 0;
     }
 
     else {                                              // Adicionando na Lista
         linkedStr *path = lin;  
-
-        // TODO LOOP ESTÁ CAUSANDO SEGMENTATION FAULT RESOLVER TODO
-
-        for (;path->next != lin; path = path->next);             // Andando pela lista até o fim
-
-        linkedStr *new = (linkedStr *) malloc(sizeof(linkedStr)); // Alocando memória para novo nodo
+        int i = 1;
+        for (;path->next != lin; path = path->next){i++;}
+        linkedStr *new = (linkedStr *) malloc(sizeof(linkedStr)); 
+        new->flag = i;
         new->str = (char *) malloc(strlen(string));
         strcpy(new->str, string);
         new->scr = scr;
         new->next = lin;
         lin->bef = new;
         new->bef = path; 
-        path->next = new;                            // linkando
+        path->next = new;                          
     }
 
     return lin;

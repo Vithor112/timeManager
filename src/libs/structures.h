@@ -2,7 +2,9 @@
 #define STRUCTURES 1
 // Flags 
 enum turn {ON, OFF};
-enum Select {ENTR,SAID,CHECK};
+
+// Flag pra Gerenciar o Menu ( indica a opção selecionada )
+enum Select {ENTRY,FINISH,SAVE};
 
 
 // Structs 
@@ -25,6 +27,7 @@ typedef struct linkedStr{
     char *str;
     struct linkedStr *next;
     struct linkedStr *bef;
+    enum Select flag;
     screen scr;
 }linkedStr;
 #endif
