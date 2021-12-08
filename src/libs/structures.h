@@ -23,7 +23,8 @@ typedef struct timeTotal {
 // Lista linkadas de Strings
 typedef struct linkedStr{
     char *str;
-    struct linkedStr *ptr;
+    struct linkedStr *next;
+    struct linkedStr *bef;
     screen scr;
 }linkedStr;
 #endif

@@ -11,17 +11,17 @@ linkedStr *menuCreateList(){
     linkedStr *link =  NULL;
     char str[100];
     // FALTA ADICIONAR SCREEN
-    FILE *arq = fopen("../../options/menu.txt", "r");
+    FILE *arq = fopen("../options/menu.txt", "r");
     while (fgets(str, 100, arq)){
-        str[strlen(str)-1] = '\0';              // Retirando Break line
+       str[strlen(str)-1] = '\0';              // Retirando Break line
 
-        factor.col = (scr.col-strlen(str))/2;       // tela
-        factor.row = (scr.row/2+count);
+       factor.col = (scr.col-strlen(str))/2;       // tela
+       factor.row = (scr.row/2+count);
 
         link = linkedAdd(link, str, factor);        // Criando lista e adicionando nodos
 
         count += 2;         // tela 
     }
     fclose(arq);
-    return link;
+    return NULL;
 }

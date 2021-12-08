@@ -2,22 +2,25 @@
 #include "structures.h"
 #define MAX_MENU 1
 #define MIN_MENU 0
+#define SELECTED 3
+#define NORMAL 2
 
 void printMenu(screen scr);
 void rotate_flag(enum Select *flag, int rot);
 
 // Move o Menu
 void controlMenu(screen scr, int caracter_inp, enum Select *flag){
+   linkedStr *menu = menuCreateList();
     switch(caracter_inp){
         case KEY_DOWN:
                 printMenu(scr);
-                attrset(COLOR_PAIR(3));
-                mvprintw(scr.row/2-2,(scr.col-strlen("Saída"))/2,"%s","Saída");
+                attrset(COLOR_PAIR(SELECTED));
+                //mvprintw(menu->scr.row/2-2,(menu->scr.col-strlen("ola"))/2,"%s","ola");
                 rotate_flag(flag, -1);
                 break;
         case KEY_UP: 
                 printMenu(scr);
-                attrset(COLOR_PAIR(3));
+                attrset(COLOR_PAIR(SELECTED));
                 mvprintw(scr.row/2-4,(scr.col-strlen("Entrada"))/2,"%s","Entrada");
                 rotate_flag(flag, 1);
                 break;
@@ -36,10 +39,10 @@ void rotate_flag(enum Select *flag, int rot){
                 *flag = MIN_MENU;
 }
 
+
+// Função print menu deve usar  menuCreate
 void printMenu(screen scr){
     attroff(A_BOLD);
-    attrset(COLOR_PAIR(2));
-    mvprintw(scr.row/2-4,(scr.col-strlen("Entrada"))/2,"Entrada");
-    mvprintw(scr.row/2-2,(scr.col-strlen("Saída"))/2,"Saída");
-    mvprintw(scr.row/2,(scr.col-strlen("Sair e Salvar"))/2,"Sair e Salvar");
+    attrset(COLOR_PAIR(NORMAL));
+   // mvprintw(scr.row/2-4,(scr.col-strlen("Entrada"))/2,"Entrada");
 }

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "structures.h"
 
 
 #define SEGUNDOS_TRABALHO 120
@@ -23,5 +24,6 @@ void controlMenu(screen scr, int caracter_inp, enum Select *flag);
 void initializeTimeTotal(timeTotal *tt);
 void interfacePrintEntry(int *row_entr,FILE *log, enum turn *is_on);
 void initializeScreen(screen *s);
+linkedStr *menuCreateList();
 
 #endif
