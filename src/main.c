@@ -1,7 +1,6 @@
 #include "libs/param.h"
 #include "libs/structures.h"
 
-FILE *openLog();
 int main(void){
     // Flag pra Gerenciar o Rastreio do tempo ( indica se já está contando o tempo )
     enum turn is_on = OFF;
@@ -13,10 +12,10 @@ int main(void){
     screen scr;                     // Armazena tamanho da tela
     int row_entr = 0;               // Cuida da posição y para printar o histórico;
 
-    FILE *log = openLog();
-    fprintf(log, "Type,Hours,Minutes,Seconds\n");
+    FILE *log = logsOpenLog();
+    
     // Inicializando Ncurses e imprimindo o menu
-    screenInitialize(&scr);
+    initializeScreen(&scr);
     initializeTimeTotal(&totalWorked);
     initializeNCurses();
     getmaxyx(stdscr,scr.row,scr.col);
@@ -32,15 +31,20 @@ int main(void){
         mvprintw(scr.row-1,0,"%s",asctime(timeGetTime()));
 
         // Adiciona uma Entrada e começa a contar o tempo  
-        if (caracter_inp == 10 && menu->flag == ENTRY && is_on == OFF){
-            interfacePrintEntry(&row_entr,log, &is_on);
+        if (caracter_inp == ENTER && menu->flag == ENTRY && is_on == OFF){
+            logsPrintEntry(&row_entr,log, &is_on);
             time(&initialTime);
         }
         // Adiciona uma Saida e para de contar o tempo, salvando-o na var Backup_seg
-        if (caracter_inp == 10 && menu->flag == FINISH && row_entr && is_on == ON){
-            interfacePrintEntry(&row_entr,log, &is_on); 
+        if (caracter_inp == ENTER && menu->flag == FINISH && row_entr && is_on == ON){
+            logsPrintEntry(&row_entr,log, &is_on); 
             Backup_seg += totalSecsWorked; 
             totalSecsWorked = 0;           
+        }
+
+        if (caracter_inp == ENTER && menu->flag == SAVE){
+            logsExitRoutine(log, row_entr, is_on, menu, totalWorked);
+            exit(0);
         }
 
         // Conta o tempo e atualiza o total contado
@@ -53,9 +57,7 @@ int main(void){
         }
         // Encerra se cumprir todas as horas diárias e toca uma música
         if((totalSecsWorked+Backup_seg) >= SEGUNDOS_TRABALHO){
-            endwin();
-            interfacePrintEntry(&row_entr,log, &is_on);
-            fclose(log);
+            logsExitRoutine(log, row_entr, is_on, menu, totalWorked);
             system("play "MUSICA_ARQUIVO);
             exit(0);
         }
@@ -69,17 +71,3 @@ int main(void){
 }
 
 
-
-
-FILE *openLog(){
-    struct tm *timeNow;
-    timeNow = timeGetTime();
-    char str[30];
-    sprintf(str, "Log-%d-%d-%d.csv", timeNow->tm_year+1900, timeNow->tm_mon+1, timeNow->tm_mday);
-    FILE *ret = fopen(str, "w");
-    if (ret == NULL){
-        fprintf(stderr, "ERROR OPENING FILE");
-        exit(1);
-    }
-    return ret;
-}

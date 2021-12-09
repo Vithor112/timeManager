@@ -14,18 +14,27 @@
 #define MUSICA_ARQUIVO "a.mp3"
 
 #define TIMETOTALPRINT(x) x.hours,x.minutes,x.seconds
+#define ENTER 10
 
 // Protótipo funções
 
 void initializeNCurses();
-void interfacePrintMenu(screen scr);
-struct tm *timeGetTime();
-linkedStr *controlMenu(screen scr, int caracter_inp, linkedStr *menu);
 void initializeTimeTotal(timeTotal *tt);
-void interfacePrintEntry(int *row_entr,FILE *log, enum turn *is_on);
-void initializeScreen(screen *s);
+void initializeScreen(screen *scr);
+
+void interfacePrintMenu(screen scr);
+
+struct tm *timeGetTime();
+
+linkedStr *controlMenu(screen scr, int caracter_inp, linkedStr *menu);
+
 linkedStr *menuCreateList();
+
 linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr);
-void screenInitialize(screen *scr);
+linkedStr *linkedDestruct(linkedStr *lin);
+
+void logsExitRoutine(FILE *log, int row_entr, enum turn is_on, linkedStr *menu, timeTotal totalWorked);
+FILE *logsOpenLog();
+void logsPrintEntry(int *row_entr,FILE *log, enum turn *is_on);
 
 #endif

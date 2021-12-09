@@ -17,7 +17,7 @@ void initializeTimeTotal(timeTotal *tt){
     tt->seconds = 0;
 }
 
-void screenInitialize(screen *scr){
+void initializeScreen(screen *scr){
     scr->row = 0;
     scr->col = 0;
 }

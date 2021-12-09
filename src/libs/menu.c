@@ -5,7 +5,7 @@
 linkedStr *menuCreateList(){
     int count =  -4;                    // Para ajustar coordenadas da tela
     screen scr, factor;  
-    screenInitialize(&scr);
+    initializeScreen(&scr);
     getmaxyx(stdscr,scr.row,scr.col);
 
     linkedStr *link =  NULL;
