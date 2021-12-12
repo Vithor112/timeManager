@@ -10,11 +10,13 @@
 #include "structures.h"
 
 
-#define SEGUNDOS_TRABALHO 120
+#define SEGUNDOS_TRABALHO 60*60*6
 #define MUSICA_ARQUIVO "a.mp3"
 
 #define TIMETOTALPRINT(x) x.hours,x.minutes,x.seconds
 #define ENTER 10
+#define SELECTED 3
+#define NORMAL 2
 
 // Protótipo funções
 
@@ -22,7 +24,8 @@ void initializeNCurses();
 void initializeTimeTotal(timeTotal *tt);
 void initializeScreen(screen *scr);
 
-void interfacePrintMenu(screen scr);
+void interfacePrintMenu(screen scr, linkedStr *menu);
+void interfacePrintEntry(linkedStr *menu);
 
 struct tm *timeGetTime();
 

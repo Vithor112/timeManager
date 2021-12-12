@@ -9,6 +9,7 @@ void initializeNCurses(){
     // Determina tempo de resposta para 1 seg, importante para sincronia do tempo!
     halfdelay(10);
     start_color();
+    curs_set(0);
 }
 
 void initializeTimeTotal(timeTotal *tt){

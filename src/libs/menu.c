@@ -10,8 +10,11 @@ linkedStr *menuCreateList(){
 
     linkedStr *link =  NULL;
     char str[100];
-    // FALTA ADICIONAR SCREEN
-    FILE *arq = fopen("../options/menu.txt", "r");
+    char file_name[] = "./options/menu.txt";
+    FILE *arq = fopen(file_name, "r");
+    if (arq == NULL){
+        printf("Error file %s didn't open correctly", file_name);
+    }
     while (fgets(str, 100, arq)){
        str[strlen(str)-1] = '\0';              // Retirando Break line
 

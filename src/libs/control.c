@@ -1,9 +1,6 @@
 #include "param.h"
 #include "structures.h"
-#define MAX_MENU 1
-#define MIN_MENU 0
-#define SELECTED 3
-#define NORMAL 2
+
 
 void printMenu(linkedStr *menu);
 void printEntry(linkedStr *menu);
@@ -15,13 +12,13 @@ linkedStr *controlMenu(screen scr, int caracter_inp, linkedStr *menu){
                         printMenu(menu);
                         menu = menu->next;
                         attrset(COLOR_PAIR(SELECTED));
-                        printEntry(menu);
+                        interfacePrintEntry(menu);
                         break;
                 case KEY_UP: 
                         printMenu(menu);
                         menu = menu->bef;
                         attrset(COLOR_PAIR(SELECTED));
-                        printEntry(menu);
+                        interfacePrintEntry(menu);
                         break;
                 default:
                         break;
@@ -35,9 +32,6 @@ linkedStr *controlMenu(screen scr, int caracter_inp, linkedStr *menu){
 void printMenu(linkedStr *menu){
         attroff(A_BOLD);
         attrset(COLOR_PAIR(NORMAL));
-        printEntry(menu);  
+        interfacePrintEntry(menu);  
 }
 
-void printEntry(linkedStr *menu){
-        mvprintw(menu->scr.row,menu->scr.col,"%s",menu->str);
-}

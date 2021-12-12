@@ -19,10 +19,10 @@ int main(void){
     initializeTimeTotal(&totalWorked);
     initializeNCurses();
     getmaxyx(stdscr,scr.row,scr.col);
-    interfacePrintMenu(scr);
+    linkedStr *menu = menuCreateList();
+    interfacePrintMenu(scr, menu);
 
     int caracter_inp;
-    linkedStr *menu = menuCreateList();
     while(true){    
         
         menu = controlMenu(scr, caracter_inp, menu);
