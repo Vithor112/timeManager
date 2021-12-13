@@ -9,9 +9,10 @@
 #include <stdlib.h>
 #include "structures.h"
 
-
-#define SEGUNDOS_TRABALHO 60*60*6
-#define MUSICA_ARQUIVO "a.mp3"
+#define MAIN_MENU_FILE "./options/menu.txt"
+#define TIME_LIMIT 60*60*6
+#define MUSIC_FILE "a.mp3"
+#define MUSIC_TIME 345
 
 #define TIMETOTALPRINT(x) x.hours,x.minutes,x.seconds
 #define ENTER 10
@@ -31,7 +32,7 @@ struct tm *timeGetTime();
 
 linkedStr *controlMenu(screen scr, int caracter_inp, linkedStr *menu);
 
-linkedStr *menuCreateList();
+linkedStr *menuCreateList(char *file_name);
 
 linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr);
 linkedStr *linkedDestruct(linkedStr *lin);

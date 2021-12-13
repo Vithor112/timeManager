@@ -1,29 +1,28 @@
 #include "param.h"
 #include "structures.h"
 
-// Lê as opções do menu, que devem estar em um arquivo de texto chamado menu na pasta options, e cada opção do menu deve estar em uma linha diferente.
-linkedStr *menuCreateList(){
-    int count =  -4;                    // Para ajustar coordenadas da tela
+// Reads the menu options, that must be in a text file whose the path will be passed as a parameter, and each option of the menu will be in a different line.
+linkedStr *menuCreateList(char *file_name){
+    int count =  -4;                    // Screen control
     screen scr, factor;  
     initializeScreen(&scr);
     getmaxyx(stdscr,scr.row,scr.col);
 
     linkedStr *link =  NULL;
     char str[100];
-    char file_name[] = "./options/menu.txt";
     FILE *arq = fopen(file_name, "r");
     if (arq == NULL){
         printf("Error file %s didn't open correctly", file_name);
     }
     while (fgets(str, 100, arq)){
-       str[strlen(str)-1] = '\0';              // Retirando Break line
+       str[strlen(str)-1] = '\0';              
 
-       factor.col = (scr.col-strlen(str))/2;       // tela
+       factor.col = (scr.col-strlen(str))/2;       // Screen control
        factor.row = (scr.row/2+count);
 
-        link = linkedAdd(link, str, factor);        // Criando lista e adicionando nodos
+        link = linkedAdd(link, str, factor);        
 
-        count += 2;         // tela 
+        count += 2;         // Screen control
     }
     fclose(arq);
     return link;

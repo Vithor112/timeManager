@@ -5,7 +5,7 @@
 void printMenu(linkedStr *menu);
 void printEntry(linkedStr *menu);
 
-// Move o Menu
+// Control the selection of the menu
 linkedStr *controlMenu(screen scr, int caracter_inp, linkedStr *menu){
         switch(caracter_inp){
                 case KEY_DOWN:
@@ -27,8 +27,6 @@ linkedStr *controlMenu(screen scr, int caracter_inp, linkedStr *menu){
                 return menu;
 }
 
-
-// Função print menu deve usar  menuCreate
 void printMenu(linkedStr *menu){
         attroff(A_BOLD);
         attrset(COLOR_PAIR(NORMAL));

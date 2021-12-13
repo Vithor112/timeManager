@@ -3,26 +3,26 @@
 // Flags 
 enum turn {ON, OFF};
 
-// Flag pra Gerenciar o Menu ( indica a opção selecionada )
+// Flag to manage the menu ( shows the options that's selected )
 enum Select {ENTRY,FINISH,SAVE};
 
 
 // Structs 
 
-// Tamanho tela
+// Screen size
 typedef struct {
     int col;
     int row; 
 }screen; 
 
-// Tempo (hrs, min, secs)
+// Time (hrs, min, secs)
 typedef struct timeTotal {
     int hours;
     int minutes;
     int seconds;
 }timeTotal; 
 
-// Lista linkadas de Strings
+// Linked list used to construct the menu
 typedef struct linkedStr{
     char *str;
     struct linkedStr *next;

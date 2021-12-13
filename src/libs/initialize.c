@@ -6,7 +6,7 @@ void initializeNCurses(){
     raw();		
     noecho();		
 	keypad(stdscr, TRUE);	
-    // Determina tempo de resposta para 1 seg, importante para sincronia do tempo!
+    // Determines the answer time to one second, that's important to sync the time!
     halfdelay(10);
     start_color();
     curs_set(0);

@@ -19,7 +19,7 @@ int main(void){
     initializeTimeTotal(&totalWorked);
     initializeNCurses();
     getmaxyx(stdscr,scr.row,scr.col);
-    linkedStr *menu = menuCreateList();
+    linkedStr *menu = menuCreateList(MAIN_MENU_FILE);
     interfacePrintMenu(scr, menu);
 
     int caracter_inp;
@@ -56,9 +56,10 @@ int main(void){
             totalWorked.seconds = (Backup_seg + totalSecsWorked)%60;
         }
         // Encerra se cumprir todas as horas diárias e toca uma música
-        if((totalSecsWorked+Backup_seg) >= SEGUNDOS_TRABALHO){
+        if((totalSecsWorked+Backup_seg) >= TIME_LIMIT){
             logsExitRoutine(log, row_entr, is_on, menu, totalWorked);
-            system("play "MUSICA_ARQUIVO);
+            system("play "MUSIC_FILE);
+            sleep(MUSIC_TIME);
             exit(0);
         }
         // Imprime a quantidade de tempo trabalhado

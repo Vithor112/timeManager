@@ -1,9 +1,9 @@
 #include "structures.h"
 #include "param.h"
 
-// Cria lista duplamente encadeada circular
+// Creates doubly circular linked list
 linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr){
-    if (lin == NULL){                                       // Criando Lista
+    if (lin == NULL){                                       // Creates list
         lin = (linkedStr *) malloc(sizeof(linkedStr));
         lin->str = (char *) malloc(strlen(string));
         strcpy(lin->str, string);
@@ -13,7 +13,7 @@ linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr){
         lin->flag = 0;
     }
 
-    else {                                              // Adicionando na Lista
+    else {                                              // Adds in list
         linkedStr *path = lin;  
         int i = 1;
         for (;path->next != lin; path = path->next){i++;}
@@ -31,7 +31,7 @@ linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr){
     return lin;
 }
 
-// Desaloca memória
+// Deallocate memory
 linkedStr *linkedDestruct(linkedStr *lin){
     linkedStr *path = lin, *aux;
     do{

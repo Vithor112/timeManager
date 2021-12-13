@@ -1,5 +1,5 @@
 #include "param.h"
-// Retorna o tempo atual 
+// Returns the actual time 
 struct tm *timeGetTime(){
     time_t raw_time;
     struct tm *actual_time;
