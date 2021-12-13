@@ -1,0 +1,4 @@
+Tempo máximo
+Arquivo do Alarme
+Carregar Log
+Avançar

@@ -2,6 +2,7 @@
 #include "structures.h"
 
 void interfacePrintMenu(screen scr, linkedStr *menu){
+    linkedStr *beginning = menu;
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(NORMAL, COLOR_BLUE, COLOR_BLACK);
     init_pair(SELECTED, COLOR_BLUE, COLOR_WHITE);
@@ -12,9 +13,9 @@ void interfacePrintMenu(screen scr, linkedStr *menu){
     interfacePrintEntry(menu);
     menu = menu->next;
     attrset(COLOR_PAIR(NORMAL));
-    interfacePrintEntry(menu);
-    menu = menu->next;
-    interfacePrintEntry(menu);
+    for (; menu != beginning; menu = menu->next)
+        interfacePrintEntry(menu);
+    refresh();
 }
 
 void interfacePrintEntry(linkedStr *menu){

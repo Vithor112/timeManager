@@ -16,11 +16,20 @@ int main(void){
     
     // Inicializando Ncurses e imprimindo o menu
     initializeScreen(&scr);
-    initializeTimeTotal(&totalWorked);
     initializeNCurses();
     getmaxyx(stdscr,scr.row,scr.col);
-    linkedStr *menu = menuCreateList(MAIN_MENU_FILE);
+    initializeTimeTotal(&totalWorked);
+
+    // INITIAL MENU
+    linkedStr *menu = menuCreateList(INITIAL_MENU_FILE, INITIAL_MENU, scr);
     interfacePrintMenu(scr, menu);
+    sleep(2);
+    erase();
+    // MAIN MENU
+    menu = menuCreateList(MAIN_MENU_FILE, MAIN_MENU, scr);
+    interfacePrintMenu(scr, menu);
+
+
 
     int caracter_inp;
     while(true){    
@@ -31,18 +40,18 @@ int main(void){
         mvprintw(scr.row-1,0,"%s",asctime(timeGetTime()));
 
         // Adiciona uma Entrada e começa a contar o tempo  
-        if (caracter_inp == ENTER && menu->flag == ENTRY && is_on == OFF){
+        if (caracter_inp == ENTER && menu->flag.main == ENTRY && is_on == OFF){
             logsPrintEntry(&row_entr,log, &is_on);
             time(&initialTime);
         }
         // Adiciona uma Saida e para de contar o tempo, salvando-o na var Backup_seg
-        if (caracter_inp == ENTER && menu->flag == FINISH && row_entr && is_on == ON){
+        if (caracter_inp == ENTER && menu->flag.main == FINISH && row_entr && is_on == ON){
             logsPrintEntry(&row_entr,log, &is_on); 
             Backup_seg += totalSecsWorked; 
             totalSecsWorked = 0;           
         }
 
-        if (caracter_inp == ENTER && menu->flag == SAVE){
+        if (caracter_inp == ENTER && menu->flag.main == SAVE){
             logsExitRoutine(log, row_entr, is_on, menu, totalWorked);
             exit(0);
         }

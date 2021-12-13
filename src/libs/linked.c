@@ -2,7 +2,7 @@
 #include "param.h"
 
 // Creates doubly circular linked list
-linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr){
+linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr, int option){
     if (lin == NULL){                                       // Creates list
         lin = (linkedStr *) malloc(sizeof(linkedStr));
         lin->str = (char *) malloc(strlen(string));
@@ -10,7 +10,10 @@ linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr){
         lin->scr = scr;
         lin->next = lin;
         lin->bef = lin; 
-        lin->flag = 0;
+        if (option == 0)
+            lin->flag.main = 0;
+        if (option == 1)
+            lin->flag.initial = 0;    
     }
 
     else {                                              // Adds in list
@@ -18,7 +21,10 @@ linkedStr* linkedAdd(linkedStr *lin, char *string, screen scr){
         int i = 1;
         for (;path->next != lin; path = path->next){i++;}
         linkedStr *new = (linkedStr *) malloc(sizeof(linkedStr)); 
-        new->flag = i;
+        if (option == 0)
+            new->flag.main = i;
+        if (option == 1)
+            new->flag.initial = i;
         new->str = (char *) malloc(strlen(string));
         strcpy(new->str, string);
         new->scr = scr;
