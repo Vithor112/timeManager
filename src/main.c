@@ -23,38 +23,51 @@ int main(void){
     // INITIAL MENU
     linkedStr *menu = menuCreateList(INITIAL_MENU_FILE, INITIAL_MENU, scr);
     interfacePrintMenu(scr, menu);
-    sleep(2);
-    erase();
+    int caracter_inp;
+    while(true){   
+        menu = controlMenu(scr, caracter_inp, menu);
+        if (caracter_inp == ENTER){ 
+            if (menu->flag.initial == NEXT){ // AVANÇAR
+                erase();
+                caracter_inp = 0;
+                break;
+            }
+        }
+    
+        caracter_inp = getch();
+        refresh();
+    }
     // MAIN MENU
     menu = menuCreateList(MAIN_MENU_FILE, MAIN_MENU, scr);
     interfacePrintMenu(scr, menu);
 
 
 
-    int caracter_inp;
+
     while(true){    
         
         menu = controlMenu(scr, caracter_inp, menu);
 
         // Atualiza o Relógio no canto direito inferior
         mvprintw(scr.row-1,0,"%s",asctime(timeGetTime()));
+        if (caracter_inp == ENTER){
+            // Adiciona uma Entrada e começa a contar o tempo  
+            if (menu->flag.main == ENTRY && is_on == OFF){
+                logsPrintEntry(&row_entr,log, &is_on);
+                time(&initialTime);
+            }
+            // Adiciona uma Saida e para de contar o tempo, salvando-o na var Backup_seg
+            if (menu->flag.main == FINISH && row_entr && is_on == ON){
+                logsPrintEntry(&row_entr,log, &is_on); 
+                Backup_seg += totalSecsWorked; 
+                totalSecsWorked = 0;           
+            }
 
-        // Adiciona uma Entrada e começa a contar o tempo  
-        if (caracter_inp == ENTER && menu->flag.main == ENTRY && is_on == OFF){
-            logsPrintEntry(&row_entr,log, &is_on);
-            time(&initialTime);
-        }
-        // Adiciona uma Saida e para de contar o tempo, salvando-o na var Backup_seg
-        if (caracter_inp == ENTER && menu->flag.main == FINISH && row_entr && is_on == ON){
-            logsPrintEntry(&row_entr,log, &is_on); 
-            Backup_seg += totalSecsWorked; 
-            totalSecsWorked = 0;           
-        }
-
-        if (caracter_inp == ENTER && menu->flag.main == SAVE){
-            logsExitRoutine(log, row_entr, is_on, menu, totalWorked);
-            exit(0);
-        }
+            if (menu->flag.main == SAVE){
+                logsExitRoutine(log, row_entr, is_on, menu, totalWorked);
+                exit(0);
+            }
+    }
 
         // Conta o tempo e atualiza o total contado
         if (is_on == ON){

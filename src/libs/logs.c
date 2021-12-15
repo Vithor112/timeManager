@@ -36,7 +36,7 @@ FILE *logsOpenLog(){
     struct tm *timeNow;
     timeNow = timeGetTime();
     char str[30];
-    sprintf(str, "./Log-%d-%d-%d.csv", timeNow->tm_year+1900, timeNow->tm_mon+1, timeNow->tm_mday);
+    sprintf(str, "logs/Log-%d-%d-%d.csv", timeNow->tm_year+1900, timeNow->tm_mon+1, timeNow->tm_mday);
     FILE *ret = fopen(str, "w");
     if (ret == NULL){
         fprintf(stderr, "ERROR OPENING FILE");
