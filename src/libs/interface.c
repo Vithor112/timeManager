@@ -3,9 +3,6 @@
 
 void interfacePrintMenu(screen scr, linkedStr *menu){
     linkedStr *beginning = menu;
-    init_pair(1, COLOR_WHITE, COLOR_BLACK);
-    init_pair(NORMAL, COLOR_BLUE, COLOR_BLACK);
-    init_pair(SELECTED, COLOR_BLUE, COLOR_WHITE);
     attron(A_BOLD | COLOR_PAIR(1));
     mvprintw(scr.row/2-6,(scr.col-strlen("-Menu"))/2,"-Menu");
     attroff(A_BOLD);

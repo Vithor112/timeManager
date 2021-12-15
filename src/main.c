@@ -1,10 +1,15 @@
 #include "libs/param.h"
 #include "libs/structures.h"
 
+void destructWin(WINDOW *win){
+    wborder(win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+    wrefresh(win);
+    delwin(win);
+}
+
 int main(void){
     // Flag pra Gerenciar o Rastreio do tempo ( indica se já está contando o tempo )
     enum turn is_on = OFF;
-
     timeTotal totalWorked;          // Armazena tempo trabalhado ( display relógio )
     int totalSecsWorked =0;         // Armazena o tempo trabalhado no período atual
     int Backup_seg = 0;             // Armazena o tempo trabalhado em toda execução do programa          
@@ -24,6 +29,7 @@ int main(void){
     linkedStr *menu = menuCreateList(INITIAL_MENU_FILE, INITIAL_MENU, scr);
     interfacePrintMenu(scr, menu);
     int caracter_inp;
+    WINDOW *test = NULL;
     while(true){   
         menu = controlMenu(scr, caracter_inp, menu);
         if (caracter_inp == ENTER){ 
@@ -32,9 +38,30 @@ int main(void){
                 caracter_inp = 0;
                 break;
             }
-        }
-    
+            if (menu->flag.initial == MAX){
+                test = newwin(4,25,menu->scr.row-2, menu->scr.col+12);
+                wattrset(test,COLOR_PAIR(4));
+                box(test,0,0);
+                wmove(test,1,1);
+                wprintw(test, "                       ");
+                wmove(test,2,1);
+                wprintw(test, "                       ");
+                wmove(test,2,3);
+                wattrset(test,COLOR_PAIR(5));
+                wprintw(test, "                   ");
+                curs_set(2);
+                wmove(test, 1,2);
+                wattrset(test,COLOR_PAIR(4));
+                wprintw(test, "INSIRA O TEMPO MAXIMO");
+                wmove(test,2,3);
+                wrefresh(test);
+                while(true);
+                
+            }
+        }    
         caracter_inp = getch();
+        wmove(test, 2,2);
+        wrefresh(test);
         refresh();
     }
     // MAIN MENU
