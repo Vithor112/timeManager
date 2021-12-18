@@ -1,10 +1,35 @@
 #include "libs/param.h"
 #include "libs/structures.h"
 
-void destructWin(WINDOW *win){
-    wborder(win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+void destructWin(WINDOW *win, linkedStr *menu, screen scr){
+    wclear(win); 
     wrefresh(win);
     delwin(win);
+    curs_set(0);
+}
+
+WINDOW*createWin(int y, int x, char *string){
+    WINDOW *win;
+    int width = strlen(string)+4;
+    win = newwin(4,width,y, x);
+    wattrset(win,COLOR_PAIR(BACKGROUND_WIN));
+    for (int j  = 1; j < 3; j++){
+        wmove(win,j,0);
+        for (int i = 0; i < strlen(string)+4;i++)
+            wprintw(win, " ");
+    }
+    wmove(win,2,3);
+    wattrset(win,COLOR_PAIR(BACKGROUND_TYPE));
+    for (int i = 0; i < width - 6;i++)
+        wprintw(win, " ");
+    wattrset(win,COLOR_PAIR(BACKGROUND_WIN));
+    curs_set(2);
+    box(win,0,0);
+    wmove(win, 1,2);
+    wprintw(win, string);
+    wmove(win,2,3);
+    wrefresh(win);
+    return win;
 }
 
 int main(void){
@@ -38,30 +63,30 @@ int main(void){
                 caracter_inp = 0;
                 break;
             }
+            if (menu->flag.initial == NAMEFILE){
+                createWin( menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA O NOME DO ARQUIVO");
+                while(true);
+            }
             if (menu->flag.initial == MAX){
-                test = newwin(4,25,menu->scr.row-2, menu->scr.col+12);
-                wattrset(test,COLOR_PAIR(4));
-                box(test,0,0);
-                wmove(test,1,1);
-                wprintw(test, "                       ");
-                wmove(test,2,1);
-                wprintw(test, "                       ");
-                wmove(test,2,3);
-                wattrset(test,COLOR_PAIR(5));
-                wprintw(test, "                   ");
-                curs_set(2);
-                wmove(test, 1,2);
-                wattrset(test,COLOR_PAIR(4));
-                wprintw(test, "INSIRA O TEMPO MAXIMO");
-                wmove(test,2,3);
-                wrefresh(test);
+                createWin( menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA O TEMPO MAXIMO");
                 while(true);
                 
             }
+
+            if (menu->flag.initial == LOAD_LOG){
+                test = createWin(menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA A DATA DO LOG");
+                caracter_inp = 0;
+                while(caracter_inp != ESQ){
+                    // if (isalnum(caracter_inp))
+                    wattrset(test, COLOR_PAIR(SELECTED));
+                    waddch(test, 'a');
+                    wrefresh(test);
+                    caracter_inp  = getch();
+                }
+                destructWin(test, menu, scr);
+            }
         }    
         caracter_inp = getch();
-        wmove(test, 2,2);
-        wrefresh(test);
         refresh();
     }
     // MAIN MENU

@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "structures.h"
+#include <ctype.h>
 
 #define MAIN_MENU_FILE "./options/mainMenu.txt"
 #define MAIN_MENU 0
@@ -21,8 +22,11 @@
 
 #define TIMETOTALPRINT(x) x.hours,x.minutes,x.seconds
 #define ENTER 10
+#define ESQ 27
 #define SELECTED 3
 #define NORMAL 2
+#define BACKGROUND_WIN 4
+#define BACKGROUND_TYPE 5
 
 // Protótipo funções
 
