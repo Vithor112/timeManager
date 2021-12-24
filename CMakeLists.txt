@@ -10,7 +10,8 @@ STATIC
     src/libs/interface.c
     src/libs/initialize.c
     src/libs/menu.c
-    src/libs/logs.c)
+    src/libs/logs.c
+    src/libs/window.c)
 add_executable(teste src/main.c)
 target_link_libraries(teste funcs)
 target_link_libraries(teste ncurses)

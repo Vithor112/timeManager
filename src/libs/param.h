@@ -23,6 +23,8 @@
 #define TIMETOTALPRINT(x) x.hours,x.minutes,x.seconds
 #define ENTER 10
 #define ESQ 27
+#define BACKSPACE 263
+#define SPACE 32
 #define SELECTED 3
 #define NORMAL 2
 #define BACKGROUND_WIN 4
@@ -49,5 +51,10 @@ linkedStr *linkedDestruct(linkedStr *lin);
 void logsExitRoutine(FILE *log, int row_entr, enum turn is_on, linkedStr *menu, timeTotal totalWorked);
 FILE *logsOpenLog();
 void logsPrintEntry(int *row_entr,FILE *log, enum turn *is_on);
+
+
+void windowDestructWin(WINDOW *win, linkedStr *menu, screen scr);
+WINDOW* windowCreateWin(int y, int x, char *string);
+void windowInputReceiving(WINDOW* win);
 
 #endif
