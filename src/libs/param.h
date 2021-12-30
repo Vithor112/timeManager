@@ -55,6 +55,6 @@ void logsPrintEntry(int *row_entr,FILE *log, enum turn *is_on);
 
 void windowDestructWin(WINDOW *win, linkedStr *menu, screen scr);
 WINDOW* windowCreateWin(int y, int x, char *string);
-void windowInputReceiving(WINDOW* win);
+char * windowInputReceiving(WINDOW* win);
 
 #endif

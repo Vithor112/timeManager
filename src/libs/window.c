@@ -33,16 +33,17 @@ WINDOW* windowCreateWin(int y, int x, char *string){
     return win;
 }
 
-void windowInputReceiving(WINDOW* win){
+char *windowInputReceiving(WINDOW* win){
     int caracter_inp = -1;
     int initial_x, initial_y;
     int max_x, max_y;
     getmaxyx(win, max_y, max_x);
-    getyx(win, initial_y,initial_x);
-    while(caracter_inp != ESQ){
-        int x = 0, y;
+    char *ret = (char *) malloc(sizeof(char)*(max_x-5));
+    getyx(win, initial_y,initial_x); // Get the first cell of the input box
+    while(caracter_inp != ESQ && caracter_inp != ENTER){
+        int x, y;
         getyx(win,y,x);
-        if (isalnum(caracter_inp) && x < max_x - 3){
+        if (isprint(caracter_inp) && x < max_x - 3){
             wattrset(win, COLOR_PAIR(SELECTED));
             waddch(win, caracter_inp);
             getyx(win,y,x);
@@ -63,4 +64,24 @@ void windowInputReceiving(WINDOW* win){
         wrefresh(win);
         caracter_inp  = getch();
     }   
+    if (caracter_inp == ENTER){
+        wmove(win, initial_y, initial_x);
+        for (int i = 0; i < (max_x-6); ++i){
+            *(ret+i) = winch(win) & A_CHARTEXT; 
+            wmove(win, initial_y, initial_x+i+1);
+        }
+        *(ret+max_x-6) = '\0';
+        FILE *arq = fopen("output.txt", "w");
+        int i = strlen(ret)-1;
+        while (SPACE == *(ret+i)){
+            *(ret+i) = '\0';
+            --i;
+        }
+        fprintf(arq,"%s", ret);
+        fprintf(arq,"%lu",strlen(ret) );
+        fclose(arq);
+        return ret;
+    }
+    else 
+        return NULL;
 }
