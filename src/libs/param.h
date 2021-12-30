@@ -16,7 +16,6 @@
 #define INITIAL_MENU_FILE "./options/initialMenu.txt"
 #define INITIAL_MENU 1
 
-#define TIME_LIMIT 60*60*6
 #define MUSIC_FILE "a.mp3"
 #define MUSIC_TIME 345
 

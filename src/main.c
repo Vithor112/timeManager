@@ -11,6 +11,7 @@ int main(void){
     time_t initialTime, finalTime;  // Armazena o tempo de entrada e o tempo de saída
     screen scr;                     // Armazena tamanho da tela
     int row_entr = 0;               // Cuida da posição y para printar o histórico;
+    int timeLimit = 6*3600;
 
     FILE *log = logsOpenLog();
     
@@ -33,23 +34,26 @@ int main(void){
                 caracter_inp = 0;
                 break;
             }
+            char* str = NULL;
             if (menu->flag.initial == NAMEFILE){
                 win = windowCreateWin( menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA O NOME DO ARQUIVO");
-                windowInputReceiving(win);
+                str = windowInputReceiving(win);
                 windowDestructWin(win, menu, scr);
             }
             if (menu->flag.initial == MAX){
-                win = windowCreateWin( menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA O TEMPO MAXIMO");
-                windowInputReceiving(win);
+                win = windowCreateWin( menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA O TEMPO MAXIMO (mins)");
+                str = windowInputReceiving(win);
+                timeLimit = atoi(str)*60;
                 windowDestructWin(win, menu, scr);
                 
             }
 
             if (menu->flag.initial == LOAD_LOG){
                 win = windowCreateWin(menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA A DATA DO LOG");
-                windowInputReceiving(win);
+                str = windowInputReceiving(win);
                 windowDestructWin(win, menu, scr);
             }
+            free(str);
         }    
         caracter_inp = getch();
         refresh();
@@ -95,7 +99,7 @@ int main(void){
             totalWorked.seconds = (Backup_seg + totalSecsWorked)%60;
         }
         // Encerra se cumprir todas as horas diárias e toca uma música
-        if((totalSecsWorked+Backup_seg) >= TIME_LIMIT){
+        if((totalSecsWorked+Backup_seg) >= timeLimit){
             logsExitRoutine(log, row_entr, is_on, menu, totalWorked);
             system("play "MUSIC_FILE);
             sleep(MUSIC_TIME);
