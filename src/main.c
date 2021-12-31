@@ -12,7 +12,7 @@ int main(void){
     screen scr;                     // Armazena tamanho da tela
     int row_entr = 0;               // Cuida da posição y para printar o histórico;
     int timeLimit = 6*3600;
-
+    char* musicFile =  NULL;
     FILE *log = logsOpenLog();
     
     // Inicializando Ncurses e imprimindo o menu
@@ -36,8 +36,10 @@ int main(void){
             }
             char* str = NULL;
             if (menu->flag.initial == NAMEFILE){
-                win = windowCreateWin( menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA O NOME DO ARQUIVO");
+                win = windowCreateWin(menu->scr.row-2,menu->scr.col+strlen(menu->str)+2, "INSIRA O NOME DO ARQUIVO");
                 str = windowInputReceiving(win);
+                musicFile = (char *) malloc(sizeof(char)*(strlen(str)+1));
+                strcpy(musicFile, str);
                 windowDestructWin(win, menu, scr);
             }
             if (menu->flag.initial == MAX){
@@ -45,7 +47,6 @@ int main(void){
                 str = windowInputReceiving(win);
                 timeLimit = atoi(str)*60;
                 windowDestructWin(win, menu, scr);
-                
             }
 
             if (menu->flag.initial == LOAD_LOG){
@@ -61,9 +62,6 @@ int main(void){
     // MAIN MENU
     menu = menuCreateList(MAIN_MENU_FILE, MAIN_MENU, scr);
     interfacePrintMenu(scr, menu);
-
-
-
 
     while(true){    
         
@@ -101,7 +99,11 @@ int main(void){
         // Encerra se cumprir todas as horas diárias e toca uma música
         if((totalSecsWorked+Backup_seg) >= timeLimit){
             logsExitRoutine(log, row_entr, is_on, menu, totalWorked);
-            system("play "MUSIC_FILE);
+            if (!musicFile)
+                musicFile = "a.mp3";
+            char *command = (char *) malloc(sizeof(char)*(strlen(musicFile)+5));
+            sprintf(command, "play %s", musicFile);
+            system(command);
             sleep(MUSIC_TIME);
             exit(0);
         }

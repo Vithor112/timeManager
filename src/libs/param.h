@@ -16,8 +16,8 @@
 #define INITIAL_MENU_FILE "./options/initialMenu.txt"
 #define INITIAL_MENU 1
 
-#define MUSIC_FILE "a.mp3"
-#define MUSIC_TIME 345
+
+#define MUSIC_TIME 500 // AVERAGE
 
 #define TIMETOTALPRINT(x) x.hours,x.minutes,x.seconds
 #define ENTER 10
