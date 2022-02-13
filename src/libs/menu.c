@@ -9,7 +9,8 @@ linkedStr *menuCreateList(char *file_name, int option, screen scr){
     char str[100];
     FILE *arq = fopen(file_name, "r");
     if (arq == NULL){
-        printf("Error file %s didn't open correctly", file_name);
+        fprintf(stderr, "Error file %s didn't open correctly", file_name);
+        exit(1);
     }
     while (fgets(str, 100, arq)){
        str[strlen(str)-1] = '\0';              
